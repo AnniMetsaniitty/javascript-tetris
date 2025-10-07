@@ -9,7 +9,7 @@
   <div id="tetris">
     <canvas id="canvas" width="200" height="400"></canvas>
     <canvas id="upcoming" width="100" height="100"></canvas>
-    <div id="score">0</div>
+    <div id="score">00000</div>
     <div id="rows">0</div>
     <div id="level">0</div>
   </div>
@@ -18,3 +18,14 @@
   <script src="js/tetris.js"></script>
 </body>
 </html>
+
+<!-- Notes:
+
+I kept the same element IDs (canvas, upcoming, score, rows,
+ level) as in the original repo, so the JS should find them.
+
+If in the original index.html there were other elements 
+(buttons, info, etc.), you should port them here too.
+
+The width/height values above are examples; adjust to 
+match what the original used (or what you want). -->
