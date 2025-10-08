@@ -1,31 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tetris</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JavaScript Tetris (JS separated)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="tetris">
-    <canvas id="canvas" width="200" height="400"></canvas>
-    <canvas id="upcoming" width="100" height="100"></canvas>
-    <div id="score">00000</div>
-    <div id="rows">0</div>
-    <div id="level">0</div>
+  <div class="wrap">
+    <h1>JavaScript Tetris</h1>
+
+    <div class="game">
+      <canvas id="board" width="240" height="480"></canvas>
+
+      <div class="sidebar">
+        <div class="panel">
+          <h2>Next</h2>
+          <canvas id="next" width="96" height="96"></canvas>
+        </div>
+
+        <div class="panel stats">
+          <div><span>Score</span><strong id="score">0</strong></div>
+          <div><span>Lines</span><strong id="lines">0</strong></div>
+          <div><span>Level</span><strong id="level">1</strong></div>
+        </div>
+
+        <div class="panel controls">
+          <h2>Controls</h2>
+          <ul>
+            <li>← / → : Move</li>
+            <li>↑ : Rotate</li>
+            <li>↓ : Soft drop</li>
+            <li>Space : Hard drop</li>
+            <li>R : Restart</li>
+            <li>P : Pause</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <small>
+        Made by Anni Metsäniitty.
+      </small>
+    </footer>
   </div>
 
-  <script src="js/stats.js"></script>
-  <script src="js/tetris.js"></script>
+  <script src="tetris.js"></script>
 </body>
 </html>
-
-<!-- Notes:
-
-I kept the same element IDs (canvas, upcoming, score, rows,
- level) as in the original repo, so the JS should find them.
-
-If in the original index.html there were other elements 
-(buttons, info, etc.), you should port them here too.
-
-The width/height values above are examples; adjust to 
-match what the original used (or what you want). -->
