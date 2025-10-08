@@ -99,6 +99,7 @@ const state = {
   lastTs: 0,
   paused: false,
   over: false,
+  waitingStart: true,
 };
 
 // -------------------------------------------------------------
@@ -208,6 +209,10 @@ function draw() {
   ctx.clearRect(0, 0, boardCanvas.width, boardCanvas.height);
   drawGrid();
   drawBoard();
+  if (state.waitingStart) {
+    drawStartScreen();   // 👈 draw start only on first load
+    return;
+  }
   drawGhost();
   drawPiece();
   if (state.over) drawGameOver();
@@ -317,6 +322,18 @@ function drawGameOver() {
   ctx.restore();
 }
 
+function drawStartScreen() {
+  ctx.save();
+  ctx.fillStyle = "rgba(10, 13, 18, .65)";
+  ctx.fillRect(0, 0, boardCanvas.width, boardCanvas.height);
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 20px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("Press Enter to Start", boardCanvas.width / 2, boardCanvas.height / 2);
+  ctx.restore();
+}
+
+
 // -------------------------------------------------------------
 // Stats UI
 // -------------------------------------------------------------
@@ -378,6 +395,15 @@ function hardDrop() {
 // Input
 // -------------------------------------------------------------
 window.addEventListener("keydown", (e) => {
+  // Start screen case
+  if (state.waitingStart) {
+    if (e.key === "Enter") {
+      state.waitingStart = false;
+      reset();
+    }
+    return; // block other keys until started
+  }
+
   if (state.over && e.key.toLowerCase() !== "r") return;
 
   switch (e.key) {
@@ -397,7 +423,7 @@ window.addEventListener("keydown", (e) => {
       break;
     }
     case " ":
-      e.preventDefault(); // avoid page scroll
+      e.preventDefault();
       hardDrop();
       break;
     case "p":
@@ -413,6 +439,7 @@ window.addEventListener("keydown", (e) => {
 
   draw();
 });
+
 
 function paddedMatrix(matrix) {
   // ensure square matrix for rotation (O already square)
@@ -460,8 +487,8 @@ function reset() {
 
 // boot
 (function init() {
-  // scale canvas to our logical block size
   boardCanvas.width = COLS * BLOCK;
   boardCanvas.height = ROWS * BLOCK;
-  reset();
+  draw(); // just draw empty grid + start screen
 })();
+
