@@ -209,12 +209,20 @@ function draw() {
   ctx.clearRect(0, 0, boardCanvas.width, boardCanvas.height);
   drawGrid();
   drawBoard();
+
   if (state.waitingStart) {
-    drawStartScreen();   // 👈 draw start only on first load
+    drawStartScreen();   // start screen (first load)
     return;
   }
+  
   drawGhost();
   drawPiece();
+
+  if (state.paused) {   // paused overlay
+    drawPauseOverlay();
+    return;
+    }
+
   if (state.over) drawGameOver();
 }
 
@@ -333,6 +341,20 @@ function drawStartScreen() {
   ctx.restore();
 }
 
+function drawPauseOverlay() {
+  ctx.save();
+  ctx.fillStyle = "rgba(10, 13, 18, .55)"; // dim the board
+  ctx.fillRect(0, 0, boardCanvas.width, boardCanvas.height);
+
+  ctx.fillStyle = "#fff";
+  ctx.textAlign = "center";
+  ctx.font = "bold 20px system-ui, sans-serif";
+  ctx.fillText("Paused", boardCanvas.width / 2, boardCanvas.height / 2 - 10);
+
+  ctx.font = "14px system-ui, sans-serif";
+  ctx.fillText("Press P to continue", boardCanvas.width / 2, boardCanvas.height / 2 + 16);
+  ctx.restore();
+}
 
 // -------------------------------------------------------------
 // Stats UI
@@ -395,13 +417,18 @@ function hardDrop() {
 // Input
 // -------------------------------------------------------------
 window.addEventListener("keydown", (e) => {
-  // Start screen case
+  // Start screen
   if (state.waitingStart) {
     if (e.key === "Enter") {
       state.waitingStart = false;
       reset();
     }
-    return; // block other keys until started
+    return;
+  }
+
+  // Block all inputs while paused, except P to resume and R to restart
+  if (state.paused && !["p", "P", "r", "R"].includes(e.key)) {
+    return;
   }
 
   if (state.over && e.key.toLowerCase() !== "r") return;
@@ -429,6 +456,7 @@ window.addEventListener("keydown", (e) => {
     case "p":
     case "P":
       state.paused = !state.paused;
+      draw(); // refresh to show/hide overlay immediately
       if (!state.paused) requestAnimationFrame(update);
       break;
     case "r":
