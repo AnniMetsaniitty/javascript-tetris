@@ -1,5 +1,12 @@
+@font-face {
+  font-family: 'Mistral';
+  src: url('./assets/MISTRAL.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
-  --bg: #0f1115;
+  --bg: #000000;
   --fg: #e8eaed;
   --muted: #aeb4be;
   --panel: #1a1f29;
@@ -10,10 +17,11 @@
 html, body { height: 100%; }
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: var(--fg);
   background: radial-gradient(1200px 600px at 20% -10%, #1b2230, var(--bg));
 }
+
 
 .wrap {
   max-width: 920px;
@@ -21,13 +29,13 @@ body {
   padding: 0 16px;
 }
 
-h1 { margin: 0 0 16px; font-weight: 700; letter-spacing: .3px; }
+h1 { margin: 0 0 16px; font-size: 50px ; font-family: 'Mistral', cursive ;font-weight: 900; color: red; letter-spacing: .3px; }
 h2 { margin: 0 0 8px; font-size: 16px; color: var(--muted); font-weight: 600; }
 
 .game {
   display: grid;
-  grid-template-columns: 240px 16px 1fr;
-  gap: 24px;
+  grid-template-columns: 240px minmax(200px, 260px); /* board | sidebar */
+  gap: 60px;
   align-items: start;
 }
 
@@ -39,7 +47,7 @@ h2 { margin: 0 0 8px; font-size: 16px; color: var(--muted); font-weight: 600; }
 }
 
 .sidebar {
-  grid-column: 3 / span 1;
+  grid-column: 2;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
@@ -68,3 +76,40 @@ h2 { margin: 0 0 8px; font-size: 16px; color: var(--muted); font-weight: 600; }
 footer { margin-top: 14px; color: var(--muted); }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
+
+.sound-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.sound-btn {
+  appearance: none;
+  border: 0;
+  background: var(--panel);
+  color: var(--fg);
+  font-size: 18px;
+  line-height: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+.sound-btn:focus { outline: 2px solid rgba(122,162,247,.45); outline-offset: 2px; }
+.sound-btn:hover { filter: brightness(1.05); }
+
+.sound-btn.floating {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+}
+
+.hero-image {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  opacity: .15;
+  user-select: none;
+  pointer-events: none;
+}

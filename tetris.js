@@ -85,6 +85,43 @@ function clone(obj) {
 }
 
 // -------------------------------------------------------------
+// Audio (background music)
+// -------------------------------------------------------------
+const audio = new Audio("boys-n-the-hood.mp3"); // adjust path if needed
+audio.loop = true;
+audio.volume = 0.1;
+
+// Start off paused (sound OFF by default)
+let audioStarted = false;
+
+const soundBtn = $("#soundBtn");
+
+function updateSoundBtn() {
+  const on = !audio.paused && !audio.muted;
+  if (soundBtn) {
+    soundBtn.textContent = on ? "🔊" : "🔈";
+    soundBtn.setAttribute("aria-pressed", on ? "true" : "false");
+    soundBtn.title = on ? "Sound on (click to mute)" : "Sound off (click to unmute)";
+  }
+}
+
+if (soundBtn) {
+  soundBtn.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play().then(() => {
+        audioStarted = true;
+        updateSoundBtn();
+      }).catch(() => {
+        // user interaction required, can try again
+      });
+    } else {
+      audio.pause();
+      updateSoundBtn();
+    }
+  });
+}
+
+// -------------------------------------------------------------
 // Game State
 // -------------------------------------------------------------
 const state = {
@@ -417,6 +454,7 @@ function hardDrop() {
 // Input
 // -------------------------------------------------------------
 window.addEventListener("keydown", (e) => {
+    
   // Start screen
   if (state.waitingStart) {
     if (e.key === "Enter") {
@@ -468,6 +506,15 @@ window.addEventListener("keydown", (e) => {
   draw();
 });
 
+// -------------------------------------------------------------
+// Lifecycle
+// -------------------------------------------------------------
+(function init() {
+  boardCanvas.width = COLS * BLOCK;
+  boardCanvas.height = ROWS * BLOCK;
+  updateSoundBtn(); // now shows 🔈 by default
+  draw();
+})();
 
 function paddedMatrix(matrix) {
   // ensure square matrix for rotation (O already square)
