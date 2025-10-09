@@ -374,7 +374,11 @@ function drawStartScreen() {
   ctx.fillStyle = "#fff";
   ctx.font = "bold 20px system-ui, sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("Press Enter to Start", boardCanvas.width / 2, boardCanvas.height / 2);
+  
+  // Show different message based on device
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const message = isMobile ? "Tap to Start" : "Press Enter to Start";
+  ctx.fillText(message, boardCanvas.width / 2, boardCanvas.height / 2);
   ctx.restore();
 }
 
@@ -560,10 +564,88 @@ function reset() {
   requestAnimationFrame(update);
 }
 
+// -------------------------------------------------------------
+// Touch Controls
+// -------------------------------------------------------------
+const touchControls = document.getElementById("touchControls");
+if (touchControls) {
+  touchControls.addEventListener("click", (e) => {
+    const btn = e.target.closest(".touch-btn");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    if (state.waitingStart && action !== "restart") return;
+    if (state.over && action !== "restart") return;
+    if (state.paused && !["pause", "restart"].includes(action)) return;
+
+    switch (action) {
+      case "left":
+        if (!collides(-1, 0)) state.piece.x--;
+        break;
+      case "right":
+        if (!collides(1, 0)) state.piece.x++;
+        break;
+      case "rotate":
+        const rotated = rotateMatrix(paddedMatrix(state.piece.matrix));
+        if (!collides(0, 0, rotated)) state.piece.matrix = rotated;
+        else wallKick(rotated);
+        break;
+      case "down":
+        softDrop();
+        break;
+      case "drop":
+        hardDrop();
+        break;
+      case "pause":
+        state.paused = !state.paused;
+        draw();
+        if (!state.paused) requestAnimationFrame(update);
+        break;
+      case "restart":
+        reset();
+        break;
+    }
+    draw();
+  });
+}
+
+// Touch to start game on mobile
+boardCanvas.addEventListener("touchstart", (e) => {
+  if (state.waitingStart) {
+    e.preventDefault();
+    state.waitingStart = false;
+    reset();
+  }
+}, { passive: false });
+
+// -------------------------------------------------------------
+// Responsive Canvas
+// -------------------------------------------------------------
+function resizeCanvas() {
+  const container = boardCanvas.parentElement;
+  const containerWidth = container.clientWidth;
+  const containerHeight = container.clientHeight;
+  
+  // Calculate scale to fit container while maintaining aspect ratio
+  const targetWidth = COLS * BLOCK;
+  const targetHeight = ROWS * BLOCK;
+  const scale = Math.min(
+    containerWidth / targetWidth,
+    containerHeight / targetHeight,
+    1 // Don't scale up, only down
+  );
+  
+  boardCanvas.style.width = (targetWidth * scale) + 'px';
+  boardCanvas.style.height = (targetHeight * scale) + 'px';
+}
+
+window.addEventListener('resize', resizeCanvas);
+
 // boot
 (function init() {
   boardCanvas.width = COLS * BLOCK;
   boardCanvas.height = ROWS * BLOCK;
+  resizeCanvas();
   draw(); // just draw empty grid + start screen
 })();
 
