@@ -4,51 +4,68 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Compton Line Legacy</title>
+  <meta name="theme-color" content="#0a0d12">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <button id="soundBtn" class="sound-btn floating" aria-pressed="false" title="Toggle sound">🔈</button>
+
   <div class="wrap">
-    
-    <h1>COMPTON LINE LEGACY</h1>
+    <header class="header" aria-label="Game header">
+      <div class="brand">
+        <h1>COMPTON LINE LEGACY</h1>
+        <span class="tagline">Arcade classic • Cube With Attitude </span>
+      </div>
+    </header>
 
-    <div class="game">
-      <canvas id="board" width="240" height="480"></canvas>
+    <main class="game" aria-label="Tetris game">
+      <!-- width/height attributes here are overridden by JS anyway -->
+      <canvas id="board" width="360" height="720" aria-label="Tetris board" role="img"></canvas>
 
-      <div class="sidebar">
-        <div class="panel">
-          <h2>Next</h2>
-          <canvas id="next" width="96" height="96"></canvas>
-        </div>
+      <aside class="sidebar" aria-label="Sidebar">
+        <section class="panel" aria-labelledby="nextLabel">
+          <h2 id="nextLabel">Next</h2>
+          <canvas id="next" width="132" height="132" aria-label="Next piece preview"></canvas>
+        </section>
 
-        <div class="panel stats">
+        <section class="panel stats" aria-labelledby="statsLabel">
+          <h2 id="statsLabel">Stats</h2>
           <div><span>Score</span><strong id="score">0</strong></div>
           <div><span>Lines</span><strong id="lines">0</strong></div>
           <div><span>Level</span><strong id="level">1</strong></div>
-        </div>
+        </section>
 
-        <div class="panel controls">
-          <h2>Controls</h2>
+        <section class="panel controls" aria-labelledby="controlsLabel">
+          <h2 id="controlsLabel">Controls</h2>
           <ul>
-            <li>← / → : Move</li>
-            <li>↑ : Rotate</li>
-            <li>↓ : Soft drop</li>
-            <li>Space : Hard drop</li>
-            <li>R : Restart</li>
-            <li>P : Pause</li>
+            <li><kbd>←</kbd> / <kbd>→</kbd> Move</li>
+            <li><kbd>↑</kbd> Rotate</li>
+            <li><kbd>↓</kbd> Soft drop</li>
+            <li><kbd>Space</kbd> Hard drop</li>
+            <li><kbd>R</kbd> Restart</li>
+            <li><kbd>P</kbd> Pause</li>
           </ul>
-        </div>
-      </div>
-    </div>
+        </section>
 
-    <button id="soundBtn" class="sound-btn floating" aria-pressed="false" title="Toggle sound">🔊</button>
+        <section class="panel sound-panel" aria-label="Sound">
+          <span style="color: var(--muted); font-size: 14px;">HYVÄÄ SYNTYMÄPÄIVÄÄ ISI </span>
+        </section>
+      </aside>
+    </main>
 
     <footer>
-      <small>
-        Made for Isi - 2025 
-      </small>
+      <small>Made by Nani</small>
+      <br />
+      <small>© <span id="year"></span> Compton Line Legacy</small>
     </footer>
   </div>
 
   <script src="tetris.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    if (typeof updateSoundBtn === "function") updateSoundBtn();
+  </script>
 </body>
 </html>
+
+

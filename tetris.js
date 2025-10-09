@@ -11,7 +11,7 @@
 // -------------------------------------------------------------
 const COLS = 10;
 const ROWS = 20;
-const BLOCK = 24;       // pixel size of a single cell
+const BLOCK = 36;       // pixel size of a single cell
 const LINE_CLEAR_SCORES = [0, 40, 100, 300, 1200]; // Tetris guideline-ish
 const LEVEL_SPEED_MS = [800, 716, 633, 550, 466, 383, 300, 216, 133, 100]; // drop speeds per level
 
@@ -55,13 +55,13 @@ const SHAPES = {
 };
 
 const COLORS = {
-  1: "#6dd6ff", // I
+  1: "#4fd1c5", // I
   2: "#3b82f6", // J
-  3: "#f59e0b", // L
-  4: "#fbbf24", // O
-  5: "#22c55e", // S
-  6: "#a78bfa", // T
-  7: "#ef4444", // Z
+  3: "#f97316", // L
+  4: "#facc15", // O
+  5: "#10b981", // S
+  6: "#8b5cf6", // T
+  7: "#f43f5e", // Z
   GHOST: "rgba(255,255,255,.14)",
   GRID: "rgba(255,255,255,.06)",
 };
@@ -567,3 +567,5 @@ function reset() {
   draw(); // just draw empty grid + start screen
 })();
 
+// ensure icon matches initial state
+if (typeof updateSoundBtn === "function") updateSoundBtn();
