@@ -1,0 +1,22 @@
+{
+  "name": "compton-line-legacy",
+  "version": "1.0.0",
+  "description": "A JavaScript Tetris game with custom theme and audio",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000 || python -m SimpleHTTPServer 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AnniMetsaniitty/javascript-tetris"
+  },
+  "keywords": [
+    "tetris",
+    "game",
+    "javascript",
+    "canvas"
+  ],
+  "author": "Anni Metsäniitty",
+  "license": "MIT"
+}
