@@ -91,10 +91,10 @@ footer a:hover { text-decoration: underline; }
   line-height: 1;
   padding: 10px 12px;
   border-radius: 10px;
-  box-shadow: 0 6px 22px rgba(0,0,0,.25);
+  box-shadow: 0 6px 22px rgba(161, 13, 13, 0);
   cursor: pointer;
 }
-.sound-btn:focus { outline: 2px solid rgba(122,162,247,.45); outline-offset: 2px; }
+.sound-btn:focus { outline: 2px solid rgb(218, 0, 0); outline-offset: 2px; }
 .sound-btn:hover { filter: brightness(1.05); }
 
 .sound-btn.floating {
